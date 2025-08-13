@@ -1,7 +1,7 @@
 /* Login Page */
 
 
-const BASE_URL = 'http://course';
+const BASE_URL = 'http://localhost/course';
 const API_URL = 'https://yaran-soft.com/ghafor/raziq';
 
 document.addEventListener('DOMContentLoaded', () => {
