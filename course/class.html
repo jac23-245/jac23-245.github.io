@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Classes</title>
+        <!-- Bootstrap 5 CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <link href="css/style.css" rel="stylesheet" />
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                background-color: rgb(205, 205, 205) !important;
+            }
+            .container .main {
+                margin-left: 204px;
+                margin-top: 70px;
+            }
+            .container .main h2{
+                margin-top: 70px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+            id="topbar"></nav>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="d-flex flex-column p-3"></div>
+
+        <!-- Main Content -->
+        <div class="container mt-3">
+            <div class="main">
+                <div class="d-flex justify-content-between mt-2 mb-3">
+                    <h2 class="m-0" data-lang="lbl_class_list"></h2>
+                    <button class="btn btn-dark" type="button"
+                        data-bs-toggle="offcanvas" data-lang="lbl_btn_add"
+                        data-bs-target="#add_class_convas"
+                        onclick="addClass()">
+                        Add
+                    </button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border mb-2 d-none"
+                        id="class_loaders"></div>
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th  data-lang="lbl_class_id">Class Id</th>
+                            <th  data-lang="lbl_teacher_name">Teacher Name</th>
+                            <th data-lang="lbl_course_name">Course Name</th>
+                            <th data-lang="lbl_start_date">Start Date</th>
+                            <th  data-lang="lbl_end_date">End Date</th>
+                            <th  data-lang="lbl_student_total">Student</th>
+                            <th data-lang="lbl_status">Status</th>
+                            <th data-lang="lbl_actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="class_list"></tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- Add -->
+        <div class="offcanvas offcanvas-start" id="add_class_convas" aria-hidden="true">
+            <div class="offcanvas-header">
+                <h1 class="offcanvas-title" data-lang="lbl_class_add">Add Class</h1>
+
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form action="#">
+                    <div class="mb-3 mt-3 position-relative">
+                        <label for="add_select_teacher"
+                            class="form-label"  data-lang="lbl_teacher">Teacher</label>
+                        <select
+                            name="add_select_teacher"
+                            id="add_select_teacher"
+                            class="form-control">
+                        </select>
+                        <div class="select_spinner position-absolute d-none"
+                            id="add_teacher_dropdown_loader">
+                            <div class="spinner-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3 position-relative">
+                        <label for="add_select_course" 
+                            class="form-label" data-lang="lbl_course">Course</label>
+                        <select
+                            name="add_select_course"
+                            id="add_select_course"
+                            class="form-control">
+                        </select>
+                        <div class="select_spinner position-absolute d-none"
+                            id="add_course_dropdown_loader">
+                            <div class="spinner-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label for="add_start_date" class="form-label" data-lang="lbl_start_date">Start
+                            Date</label>
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="add_start_date"
+                            name="add_start_date"
+                            placeholder="Choose Date">
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label for="add_status" 
+                            class="form-label" data-lang="lbl_status">Status</label>
+                        <select
+                            name="add_status"
+                            id="add_status"
+                            class="form-control">
+                            <option value="pending" data-lang="lbl_class_pending">Pending</option>
+                            <option value="in_progress"  data-lang="lbl_class_in_progress">In Progress</option>
+                            <option value="completed" data-lang="lbl_class_completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="add_button" >
+                        <span data-lang="lbl_btn_add">Add</span>
+                        <span
+                            class="spinner-border spinner-border-sm d-none"
+                            id="add_spinner"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- Add -->
+
+        <!-- Add Student-->
+        <div class="offcanvas offcanvas-start" id="add_student_convas" aria-hidden="true">
+            <div class="offcanvas-header">
+                <h1 class="offcanvas-title" data-lang="lbl_add_student">Add Student</h1>
+                <input type="hidden" id="add_student_class_id">
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form action="#">
+                    <div class="mb-3 mt-3 position-relative">
+                        <label for="add_name"
+                            class="form-label" data-lang="lbl_student">Student</label>
+                        <select
+                            name="add_name"
+                            id="add_name"
+                            class="form-control">
+
+                        </select>
+                        <div class="select_spinner position-absolute d-none "
+                            id="add_name_dropdown_loader">
+                            <div class="spinner-border"></div>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="add_student" >
+                        <span data-lang="lbl_add_student">Add Student</span>
+                        <span
+                            class="spinner-border spinner-border-sm d-none"
+                            id="add_student_spinner"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- Add Student-->
+
+        <!-- Edit Class-->
+        <div class="offcanvas offcanvas-start" id="edit_class_convas" aria-hidden="true">
+            <div class="offcanvas-header">
+                <h1 class="offcanvas-title" data-lang="lbl_edit_class">Edit Class</h1>
+                <input type="hidden" id="class_id">
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+
+                <form action="#">
+                    <div class="mb-3 mt-3 position-relative">
+                        <label for="edit_select_teacher"
+                            class="form-label" data-lang="lbl_teacher">Teacher</label>
+                        <select
+                            name="edit_select_teacher"
+                            id="edit_select_teacher"
+                            class="form-control">
+                        </select>
+                        <div class="select_spinner position-absolute d-none"
+                            id="edit_teacher_dropdown_loader">
+                            <div class="spinner-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3 position-relative">
+                        <label for="edit_select_course"
+                            class="form-label" data-lang="lbl_course">Course</label>
+                        <select
+                            name="edit_select_course"
+                            id="edit_select_course"
+                            class="form-control">
+                        </select>
+                        <div class="select_spinner position-absolute d-none"
+                            id="edit_course_dropdown_loader">
+                            <div class="spinner-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label for="edit_start_date" class="form-label"  data-lang="lbl_start_date">Start
+                            Date</label>
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="edit_start_date"
+                            name="edit_start_date"
+                            placeholder="Choose Date">
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label for="edit_status"
+                            class="form-label" data-lang="lbl_status">Status</label>
+                        <select
+                            name="edit_status"
+                            id="edit_status"
+                            class="form-control">
+                            <option value="pending" data-lang="lbl_class_pending">Pending</option>
+                            <option value="in_progress"  data-lang="lbl_class_in_progress">In Progress</option>
+                            <option value="completed" data-lang="lbl_class_completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="edit_button" >
+                        <span data-lang="lbl_edit_save">Save Change</span>
+                        <span
+                            class="spinner-border spinner-border-sm d-none"
+                            id="edit_spinner"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+      
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="students_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" data-lang="lbl_list_student">List Of Added Student</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border mb-2 d-none"
+                        id="student_loaders"></div>
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th data-lang="lbl_id">Class Id</th>
+                            <th data-lang="lbl_name">Name</th>
+                            <th data-lang="lbl_father">Father Name</th>
+                            <th data-lang="lbl_phone">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student_list"></tbody>
+                </table>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" data-lang="lbl_close_class">Close</button>
+            </div>
+
+            </div>
+        </div>
+        </div>
+        <!-- Edit Student-->
+
+        <!-- Bootstrap 5 JS (optional, for interactivity) -->
+    
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="js/js.js"></script>
+        <script src="js/class.js"></script>
+
+    </body>
+</html>
