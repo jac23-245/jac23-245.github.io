@@ -1,7 +1,7 @@
 /* Login Page */
 
 
-const BASE_URL = 'http://course';
+const BASE_URL = 'http://class';
 const API_URL = 'https://yaran-soft.com/ghafor/raziq';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -316,4 +316,5 @@ function getAlertMessage(messageKey, titleKey='', type="toast", icon="") {
             }
         })
         .catch(error => console.error('Error loading JSON:', error));
+
 }
